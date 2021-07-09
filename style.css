@@ -1,3 +1,43 @@
+/*Variables*/
+:root {
+    --game-font-size: 30px;
+    --game-font--weight: 600;
+}
+
+/*Canvas*/
 canvas {
+    display: block;
+    margin: 100px auto 0 auto;
     background-color: #3e3e3e;
+}
+
+/*Game start*/
+.startGame {
+    width: fit-content;
+    height: 300px;
+    position: relative;
+    top: -300px;
+    margin: 0 auto;
+    font-size: var(--game-font-size);
+    font-weight: var(--game-font--weight);
+    text-shadow: 1px 1px #000;
+    line-height: 300px;
+    color: rgb(252, 248, 0);
+}
+
+/*End game message*/
+.endGame {
+    visibility: hidden;
+    width: fit-content;
+    height: 300px;
+    position: relative;
+    top: -600px;
+    left: -300px;
+    padding: 50px;
+    margin: 0 auto;
+    font-size: var(--game-font-size);
+    font-weight: var(--game-font--weight);
+    text-shadow: 1px 1px #000;
+    line-height: 100px;
+    color: rgb(224, 0, 0);
 }

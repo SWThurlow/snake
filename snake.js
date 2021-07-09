@@ -1,3 +1,11 @@
+//Start game.
+const startGame = document.querySelector('.startGame');
+const startBtn  = startGame.childNodes[1];
+
+//End game msg.
+const endGame = document.querySelector('.endGame');
+const playAgain = endGame.childNodes[3];
+
 //Setting up the canavas
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
@@ -19,23 +27,23 @@ let ySpeed = 0;
 let direction = '';
 let tail = [];
 
-//Score variable, seems fairly apprent, I'm not too sure what else there is to say about that one.
 let score = 0;
 
 //Listening out for which way to go.
 document.addEventListener("keydown", keyDownHandler);
 
-function keyDownHandler(evt) {
-    if (evt.key == "Right" || evt.key == "ArrowRight") {
+function keyDownHandler(e) {
+    e.preventDefault();
+    if (e.key == "Right" || e.key == "ArrowRight") {
         xSpeed = scale;
         ySpeed = 0;
-    } else if (evt.key == "Left" || evt.key == "ArrowLeft") {
+    } else if (e.key == "Left" || e.key == "ArrowLeft") {
         xSpeed = -scale;
         ySpeed = 0;
-    } else if (evt.key == "Up" || evt.key == "ArrowUp") {
+    } else if (e.key == "Up" || e.key == "ArrowUp") {
         xSpeed = 0;
         ySpeed = -scale;
-    } else if (evt.key == "Down" || evt.key == "ArrowDown") {
+    } else if (e.key == "Down" || e.key == "ArrowDown") {
         xSpeed = 0;
         ySpeed = scale;
     }
@@ -45,7 +53,7 @@ function keyDownHandler(evt) {
 
 //Snake drawing function.
 function drawSnake() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     //Head of the snake.
     ctx.beginPath();
@@ -116,7 +124,9 @@ function eat() {
 function collisionDetection() {
     for (let i = 0; i < tail.length - 2; i++) {
         if (tail[i].x === snakeX && tail[i].y === snakeY) {
-            alert('Game Over!')
+            clearInterval(playingSnake);
+            playingSnake = null;
+            endGame.style.cssText = 'visibility: visible; left: 0px;';
         }
     }
 }
@@ -135,4 +145,25 @@ function playSnake() {
     ctx.fillRect(fruitX, fruitY, scale, scale)
     ctx.closePath();
 }
-setInterval(playSnake, 250);
+
+let playingSnake;
+
+
+/*Event listeners to start game and play again.*/
+function toStartGame() {
+    startBtn.style.cssText = 'visibility: hidden; left: 300px;'
+    playing = true;
+    playingSnake = setInterval(playSnake, 250);
+}
+startBtn.addEventListener('click', toStartGame);
+
+function playingAgain() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    endGame.style.cssText = 'visibility: hidden; left: -300px;';
+    pickFruit();
+    snakeX = (columns / 2) * scale;
+    snakeY = (rows / 2) * scale;
+    tail.splice(0, tail.length);
+    playingSnake = setInterval(playSnake, 250);
+}
+playAgain.addEventListener('click', playingAgain);
