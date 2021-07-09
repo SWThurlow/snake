@@ -53,7 +53,6 @@ function drawSnake() {
     ctx.fillRect(snakeX, snakeY, scale, scale);
     ctx.closePath();
 
-    console.log(snakeX, snakeY, tail);
     //Drawing the tail.
     for (let i = 0; i < tail.length; i++) {
         ctx.fillRect(tail[i].x,
@@ -65,11 +64,11 @@ function drawSnake() {
     snakeY += ySpeed;
 
     //Going over the edge.
-    if (snakeX > canvas.width) {
+    if (snakeX >= canvas.width) {
         snakeX = 0;
     }
 
-    if (snakeY > canvas.height) {
+    if (snakeY >= canvas.height) {
         snakeY = 0;
     }
 
@@ -110,7 +109,6 @@ function eat() {
         score++;
         tail.push({ x: fruitX, y: fruitY });
         pickFruit();
-        console.log(tail, 'eat')
     }
 }
 
@@ -118,7 +116,6 @@ function eat() {
 function collisionDetection() {
     for (let i = 0; i < tail.length - 2; i++) {
         if (tail[i].x === snakeX && tail[i].y === snakeY) {
-            console.log(tail[i].x, tail[i].y, snakeX, snakeY)
             alert('Game Over!')
         }
     }
@@ -126,18 +123,16 @@ function collisionDetection() {
 
 
 //Main game function.
-
 //Initial fruit picked out side of playSnake to keep fruit x and y consitent.
-
 pickFruit();
 
 function playSnake() {
-    drawSnake();
+    collisionDetection();
     eat();
+    drawSnake();
     ctx.beginPath();
     ctx.fillStyle = "#4cafab";
     ctx.fillRect(fruitX, fruitY, scale, scale)
     ctx.closePath();
-    collisionDetection();
 }
 setInterval(playSnake, 250);
