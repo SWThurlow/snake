@@ -1,34 +1,28 @@
 //Setting up the canavas
-
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext("2d");
 
 //Scale to make everything work as squares on the canvas. Rows and columns to use for locations and collision detection.
-
 const scale = 10;
 const rows = canvas.height / scale;
 const columns = canvas.width / scale;
 
 //Variables for drawing the snake and  fruit and detecting if our snake is eating the fruit.
-
 let snakeX = (columns / 2) * scale;
 let snakeY = (rows / 2) * scale;
 let fruitX;
 let fruitY;
 
 //Variables to let the snake slither.
-
 let xSpeed = scale * 1;
 let ySpeed = 0;
 let direction = '';
 let tail = [];
 
 //Score variable, seems fairly apprent, I'm not too sure what else there is to say about that one.
-
 let score = 0;
 
 //Listening out for which way to go.
-
 document.addEventListener("keydown", keyDownHandler);
 
 function keyDownHandler(evt) {
@@ -50,31 +44,27 @@ function keyDownHandler(evt) {
 
 
 //Snake drawing function.
-
 function drawSnake() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     //Head of the snake.
-
     ctx.beginPath();
     ctx.fillStyle = "#fff";
     ctx.fillRect(snakeX, snakeY, scale, scale);
     ctx.closePath();
 
+    console.log(snakeX, snakeY, tail);
     //Drawing the tail.
-
     for (let i = 0; i < tail.length; i++) {
         ctx.fillRect(tail[i].x,
             tail[i].y, scale, scale);
     }
 
     //Slithering along.
-
     snakeX += xSpeed;
     snakeY += ySpeed;
 
     //Going over the edge.
-
     if (snakeX > canvas.width) {
         snakeX = 0;
     }
@@ -92,7 +82,6 @@ function drawSnake() {
     }
 
     //Updating the tail.
-
     if (score > 0) {
         for (let i = 0; i < score; i++) {
             tail[i] = tail[i + 1];
@@ -103,7 +92,6 @@ function drawSnake() {
 }
 
 //Fruit picking.
-
 function pickFruit() {
     fruitX = (Math.floor(Math.random() *
         columns - 1) + 1) * scale;
@@ -117,21 +105,20 @@ function pickFruit() {
 
 
 //Feeding the snake.
-
 function eat() {
     if (snakeX === fruitX && snakeY === fruitY) {
         score++;
         tail.push({ x: fruitX, y: fruitY });
         pickFruit();
-        console.log(tail);
+        console.log(tail, 'eat')
     }
 }
 
 //Making sure the snake doesn't turn into an ouroboros.
-
 function collisionDetection() {
     for (let i = 0; i < tail.length - 2; i++) {
         if (tail[i].x === snakeX && tail[i].y === snakeY) {
+            console.log(tail[i].x, tail[i].y, snakeX, snakeY)
             alert('Game Over!')
         }
     }
